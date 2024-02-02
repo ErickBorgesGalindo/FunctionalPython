@@ -39,7 +39,7 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 ## Versionado 📌
 
 Usamos [SemVer](http://semver.org/) para el versionado.   
-Actualmente la versión de este proyecto es: **1.0.0**
+Actualmente la versión de este proyecto es: **1.0.1**
 
 ## Autores ✒️
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
