@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import messagebox as Messagebox
 from PIL import Image, ImageTk
 import os
+import shutil
 
 #-------- Descargar videos -----------
 def video():
@@ -18,7 +19,6 @@ def video():
         Messagebox.showinfo("Holi","Error al descargar video")
 
 def video_playlist():
-    #Escribir playlist a descargar
     link = videos.get()
     playlist=Playlist(link)
     print(playlist)
@@ -32,16 +32,15 @@ def video_playlist():
 
         except pytube.exceptions.AgeRestrictedError:
             Messagebox.showinfo("Holi",f"El video: {filename}, tiene restricción de edad")
-        except VideoUnavailable:
+        except pytube.VideoUnavailable:
             Messagebox.showinfo("Holi",f"El video: {filename}, ya no esta disponible")
 
     Messagebox.showinfo("Holi","Playlist descargada")
-    
 
 #----------- Convertirdores ------------
 def mp4():
     from tkinter import Tk
-    import tkinter.filedialog as tk
+    import tkinter.filedialog as tkf
     import moviepy.editor as editor
 
     root = Tk()
@@ -54,28 +53,27 @@ def mp4():
         video_clip.audio.write_audiofile(nombre.replace('.mp4','.mp3'))
 
     Messagebox.showinfo("Holi","Canciones convertidas")
-    
 
-#----------- Automatización ------------
 def eliminar_videos():
     for archivo in os.listdir():
         if archivo.endswith(".mp4"):
             os.remove(os.path.join(archivo))
     Messagebox.showinfo("Holi","Videos eliminados")
-    
 
 def mover_canciones():
     carpeta_origen = os.getcwd()
-    capeta_destino = os.path.join(carpeta_origen, "Canciones")
-
-    if not os.path.ecistis(carpeta_destino):
-        os.mkdir(carpeta_destino)
-
-    for archivo in os.listdir(carpeta_origen):
-        if archivo.endswith(".mp4"):
-            shutil.move(os.path.join(carpeta_origen, archivo), os.path.join(carpeta_destino, archivo))
-    Messagebox.showinfo("Holi","Canciones movidas")
+    carpeta_destino = os.path.join(carpeta_origen, "Canciones")
     
+    if not os.path.exists(carpeta_destino):
+        os.mkdir(carpeta_destino)
+        for archivo in os.listdir(carpeta_origen):
+            if archivo.endswith(".mp3"):
+                shutil.move(os.path.join(carpeta_origen, archivo), os.path.join(carpeta_destino, archivo))
+    else:
+        for archivo in os.listdir(carpeta_origen):
+            if archivo.endswith(".mp3"):
+                shutil.move(os.path.join(carpeta_origen, archivo), os.path.join(carpeta_destino, archivo))
+    Messagebox.showinfo("Holi","Canciones movidas")
 
 def popup():
     Messagebox.showinfo("Holi","Yo hice esto")
@@ -84,12 +82,11 @@ root = Tk()
 root.config(bd=15)
 root.title("Multi-Media-Tools")
 
-#img = Image.open("alex.png")
-#resized_img = img.resize((200, 200), Image.ANTIALIAS)
-#photo = ImageTk.PhotoImage(resized_img)
-#image = PhotoImage(file="batma.png")
-#foto = Label(root, image=photo, bd=0)
-#foto.grid(row=0, column=0)
+img = Image.open("alex.png")
+resized_img = img.resize((200, 200))
+photo = ImageTk.PhotoImage(resized_img)
+foto = Label(root, image=photo, bd=0)
+foto.grid(row=0, column=0)
 
 menubar = Menu(root)
 root.config(menu=menubar)
